@@ -3,6 +3,7 @@ package jp.ac.uryukyu.ie.e185762;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Enemy {
 
@@ -11,6 +12,9 @@ public class Enemy {
     int enemy_attack;
     int enemy_defense;
     int enemy_speed;
+
+    Scanner in = new Scanner(System.in);
+
 
     public void MakeAvilityList(String filename) throws IOException {
         Tools tools = new Tools();
@@ -58,4 +62,24 @@ public class Enemy {
         }
 
     }
+
+    public int attack(int character_hp, int character_defence, int enemy_physical){
+
+        int attack = this.enemy_attack-character_defence;
+        if (attack<0){
+            attack=0;
+        }
+        int attack_result = character_hp-attack;
+        if (enemy_physical>0){
+
+            System.out.println(this.enemy_name+"のこうげき！");
+            System.out.println("あいてに"+attack+"のだめーじ");
+            in.nextLine();
+
+        }
+
+        return attack_result;
+    }
+
+
 }

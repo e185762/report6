@@ -18,12 +18,25 @@ public class Main {
 
         //adv.TitlePrint();
         //adv.FirstStory();
-        String input_text = in.nextLine();
+        boolean input = false;
+        String character = null;
+        String[] character_string = null;
+        System.out.print("どれにしますか？　＞＞＞");
+        while (input==false){
+            String input_text = in.nextLine();
+            character_string = cct.CharacterSerect(input_text);
+
+            if (character_string[1] == ("true")){
+                input=!input;
+            }
+
+        }
+        character=character_string[0];
+        cct.CharacterMake(character);
+        
         eny.EnemyDicision();
-        cct.CharacterSerect(input_text);
-        cct.CharacterMake();
-        System.out.println(eny.enemy_name+"をはっけん");
-        System.out.println(cct.character_name+"はどうしますか？");
+        fig.Fight(cct,eny);
+
 
 
 

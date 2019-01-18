@@ -13,9 +13,11 @@ public class Character {
     int character_defense;
     int character_speed;
 
-    String character_code;
-
     Scanner in = new Scanner(System.in);
+
+    //public Character(String name,int attack,int defence, int physical, int character_speed){
+
+    //}
 
 
     public void MakeAvilityList(String filename) throws IOException {
@@ -51,50 +53,76 @@ public class Character {
     }
 
 
-    public void CharacterSerect(String input) throws IOException {
+    public String[] CharacterSerect(String input_code) throws IOException {
         String character_url = "./sentence/character_list/doll.txt%./sentence/character_list/hero.txt%./sentence/character_list/tank.txt\n";
         String[] split_sentence = character_url.split("%", 0);
 
-        //String input_text = in.nextLine();
-
         String[] choice_comands = {"a", "s", "d"};
 
-        boolean success = false;
-        int number=0;
+        int number = 0;
+        int j_number = 0;
+
+        String comand = null;
+        String j_comand = null;
         for (int num = 0; num < split_sentence.length; num++) {
-            if (input.equals(choice_comands[num])) {
+
+            if (input_code.equals(choice_comands[num])) {
                 System.out.println("");
                 System.out.println("「ほんとうによろしいですか？」");
                 System.out.print("yes or no　＞＞＞");
                 String input_again_text = in.nextLine();
                 if (input_again_text.equals("yes")) {
-                    number += num;
-                    success = true;
+                    j_number = num;
+                    j_comand = "true";
                 } else {
-                    System.out.print("どれにしますか？　＞＞＞");
-                    String input_again = in.nextLine();
-                    CharacterSerect(input_again);
+                    System.out.print("どれにいたしますか？　＞＞＞");
+                    j_comand= "false";
                 }
             }
+            comand=j_comand;
+            number=j_number;
         }
-        if (success==false) {
-            System.out.print("もういちどおねがいします　＞＞＞");
-            String input_text = in.nextLine();
-            CharacterSerect(input_text);
+
+        if (comand==null&&number==0){
+            System.out.println("どれにいたしますか？　＞＞＞");
         }
-        this.character_code = choice_comands[number];
+        String judge_comand = comand;
+        String return_string = choice_comands[number];
+        String[] returns = {return_string,judge_comand};
+        return returns;
     }
 
-    public void CharacterMake () throws IOException {
+    public void CharacterMake (String input) throws IOException {
 
-        if (this.character_code == "a") {
+        if (input.equals("a")) {
             MakeAvilityList("./sentence/character_list/doll.txt");
-        } else if (this.character_code == "s") {
+        } else if (input.equals("s")) {
             MakeAvilityList("./sentence/character_list/hero.txt");
-        } else if (this.character_code == "d") {
+        } else if (input.equals("d")) {
             MakeAvilityList("./sentence/character_list/tank.txt");
         }
+
     }
+
+    public int attack(int enemy_hp, int enemy_defence, int character_physical){
+
+        int attack = this.character_attack-enemy_defence;
+        if (attack<0){
+            attack=0;
+        }
+        int attack_result = enemy_hp-attack;
+        if (character_physical>0){
+
+            System.out.println(this.character_name+"のこうげき！");
+            System.out.println("あいてに"+attack+"のだめーじ");
+            in.nextLine();
+
+        }
+
+        return attack_result;
+
+    }
+
 }
 
 
