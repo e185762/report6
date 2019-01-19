@@ -16,14 +16,8 @@ public class Main {
         Scanner in = new Scanner(System.in);
 
 
-
-        // a = "doll_1.txt";
-        //adv.Adventure("./sentence/story_list/first_story_list/doll_stories/"+a);
-        //File dir = new File("./sentence/story_list/first_story_list/doll_stories/");
-        //String[] files = dir.list();
-        //System.out.println(files[0]);
-        //adv.TitlePrint();
-        //adv.FirstStory();
+        adv.TitlePrint();
+        adv.FirstStory();
         boolean input = false;
         String character = null;
         String[] character_string = null;
@@ -40,7 +34,7 @@ public class Main {
         character=character_string[0];
         cct.CharacterMake(character);
 
-        tool.StoryReader(cct,eny,character,1);
+        adv.StoryReader(cct,eny,character,1,5);
 
         //adv.Adventure("./sentence/story_list/first_story_list/doll_stories/doll_1.txt");
         //eny.EnemyDicision();
