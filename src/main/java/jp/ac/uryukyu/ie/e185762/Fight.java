@@ -10,12 +10,6 @@ public class Fight {
     Scanner in = new Scanner(System.in);
 
 
-    Character character = new Character();
-    Enemy enemy = new Enemy();
-
-    int character_hitpoint = character.character_physical;
-    int enemy_hitpoint = enemy.enemy_physical;
-
     public void MakeSerectMenu() throws IOException {
         Tools tool = new Tools();
         System.out.println(tool.fileToString(new File("./sentence/menu.txt")));

@@ -11,11 +11,17 @@ public class Main {
         Character cct = new Character();
         Fight fig = new Fight();
         Enemy eny = new Enemy();
+        Tools tool = new Tools();
 
         Scanner in = new Scanner(System.in);
 
 
 
+        // a = "doll_1.txt";
+        //adv.Adventure("./sentence/story_list/first_story_list/doll_stories/"+a);
+        //File dir = new File("./sentence/story_list/first_story_list/doll_stories/");
+        //String[] files = dir.list();
+        //System.out.println(files[0]);
         //adv.TitlePrint();
         //adv.FirstStory();
         boolean input = false;
@@ -33,9 +39,15 @@ public class Main {
         }
         character=character_string[0];
         cct.CharacterMake(character);
-        
-        eny.EnemyDicision();
-        fig.Fight(cct,eny);
+
+        tool.StoryReader(cct,eny,character,1);
+
+        //adv.Adventure("./sentence/story_list/first_story_list/doll_stories/doll_1.txt");
+        //eny.EnemyDicision();
+        //fig.Fight(cct,eny);
+        //adv.Adventure("./sentence/story_list/first_story_list/doll_stories/doll_2.txt");
+
+
 
 
 
