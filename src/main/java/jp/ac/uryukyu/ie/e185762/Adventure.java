@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 
-
+/**
+ * ストーリーパートを実行するクラス
+ */
 
 public class Adventure {
     /**
@@ -28,7 +30,7 @@ public class Adventure {
      * 選択肢にも対応
      *
      * @param filename 　テキストファイルの場所　例：「./sentence/story_list/1_story_list/~」
-     * @throws IOException
+     * @throws IOException ファイル入出力時に起こる例外
      */
     public void Adventure(String filename) throws IOException {
         Tools tools = new Tools();
@@ -60,7 +62,7 @@ public class Adventure {
      *
      * @param imput　選んだ選択肢の文字
      * @param choice_sentence　Adventure()から読み込んだ分岐の文章テキストの場所　例：「./sentence/story_list/1_story_list/choice_1/~」
-     * @throws IOException 入出力処理の失敗によって生成される例外クラス
+     * @throws IOException ファイル入出力時に起こる例外
      */
     public void SerectChoice(String imput, String choice_sentence) throws IOException{
 
@@ -95,7 +97,7 @@ public class Adventure {
      * @param character_code　キャラクタの種類を決める文字
      * @param story_part　「今何章目か」の数字を入力　例：１章の場合「１」　２章の場合「２」
      * @param enemy_attack_number　この章を終わらせるために「倒すべきエネミーの数」　例：４匹の時「４」　３匹の時「３」
-     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     * @throws IOException ファイル入出力時に起こる例外
      */
     public void StoryReader(Character character,Enemy enemy,String character_code, int story_part,int enemy_attack_number) throws IOException {
         String[] choice_comands = {"a", "s", "d"};
@@ -146,15 +148,18 @@ public class Adventure {
     }
 
     /**
-     * StoryReader()でのMainmenu画面で「おはなしする」を選択した時に
-     * ランダムで文章テキストを出力するメソッド
+     *StoryReader()でのMainmenu画面で「おはなしする」を選択した時に
+     *ランダムで文章テキストを出力するメソッド
      *
-     * @param dirctor_name　選択したキャラクタのディレクトリ名
-     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     * @param dirctor_name 選択したキャラクタのディレクトリ名
+     * @throws IOException ファイル入出力時に起こる例外
      */
     public void CharacterTalk(String dirctor_name) throws IOException {
+        File dir = new File("./sentence/story_list/"+dirctor_name+"/talk_story_list");
+        String[] story_list= dir.list();
         Random random = new Random();
-        int num = random.nextInt(3)+1;
+        int num = random.nextInt(story_list.length)+1;
+        //int num = random.nextInt(3)+1;
         Adventure("./sentence/story_list/"+dirctor_name+"/talk_story_list/talk"+num+".txt");
 
     }
@@ -162,7 +167,8 @@ public class Adventure {
 
     /**
      * タイトルを表示するメソッド
-     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     *
+     * @throws IOException ファイル入出力時に起こる例外
      */
     public void TitlePrint() throws IOException {
         Adventure("./sentence/title.txt");
@@ -173,7 +179,7 @@ public class Adventure {
      *
      * @param character Characterクラスのコンストラクタ
      * @return　キャラクタの種類を決める文字
-     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     * @throws IOException ファイル入出力時に起こる例外
      */
 
     public String FirstStory(Character character) throws IOException{

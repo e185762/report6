@@ -6,8 +6,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-
-
+/**
+ * テキストファイルをString型に変換するクラス
+ */
 
 
 public class Tools {
@@ -17,8 +18,8 @@ public class Tools {
      * 参考http://www7a.biglobe.ne.jp/~java-master/samples/file/FileToString.html
      *
      * @param file_name 文字列化したいテキストファイルの場所　例：「./sentence/~」
-     * @return　文字列化したテキストファイル
-     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     * @return　String化したテキストファイル
+     * @throws IOException ファイル入出力時に起こる例外
      */
     public String fileToString(File file_name) throws IOException {
         BufferedReader reader = null;

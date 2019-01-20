@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 /**
- *キャラクタのステータス作成、また戦闘パートでの攻撃行動を処理するクラスです。
+ *キャラクタのステータス作成、また戦闘パートでの攻撃行動を処理するクラス
  */
 
 
@@ -44,7 +44,7 @@ public class Character {
      * 「character_defense」「character_speed」に当てはめるメソッド
      *
      * @param filename 作成したいキャラクタのステータステキストの場所　例：「./sentence/character_list/~」
-     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     * @throws IOException ファイル入出力時に起こる例外
      */
     public void MakeAvilityList(String filename) throws IOException {
         Tools tools = new Tools();
@@ -128,10 +128,10 @@ public class Character {
 
     /**
      * CharacterSerect()実行時に返された「キャラクタの種類を決める文字」を用いて、
-     * その文字に応じたキャラクタのステータステキストがある場所をMakeAvilityList()に入力するメソッドです
+     * その文字に応じたキャラクタのステータステキストがある場所をMakeAvilityList()に入力するメソッド
      *
      * @param input CharacterSerect()で返されたキャラクタの種類を決める文字　「a」「s」「d」のいずれか
-     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     * @throws IOException ファイル入出力時に起こる例外
      */
     public void CharacterMake (String input) throws IOException {
 
@@ -146,13 +146,13 @@ public class Character {
     }
 
     /**
-     * 戦闘パートでの攻撃行動を行うメソッドです
-     * 「エネミーのHP」から「キャラクタの攻撃力」＋「エネミーの防御力」を引いた値を返します。
+     * 戦闘パートでの攻撃行動を行うメソッド
+     * 「エネミーのHP」から「キャラクタの攻撃力」＋「エネミーの防御力」を引いた値を返す
      *
      * @param enemy_hp　エネミーのHP
      * @param enemy_defence　エネミーの防御力
      * @param character_physical　キャラクタのHP
-     * @return　「エネミーのHP」から「キャラクタの攻撃力」＋「エネミーの防御力」を引いた値
+     * @return　「エネミーのHP」から「キャラクタの攻撃力」＋「エネミーの防御力」を引いたint値
      */
     public int attack(int enemy_hp, int enemy_defence, int character_physical){
 
