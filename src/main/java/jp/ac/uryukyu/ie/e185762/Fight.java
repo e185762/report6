@@ -7,24 +7,37 @@ import java.util.Scanner;
 
 public class Fight {
 
+    /**
+     * ユーザー入力を受け取るためのScannerのコンストラクタ
+     */
     Scanner in = new Scanner(System.in);
 
 
+    /**
+     * 戦闘パートでの行動画面を表示するメソッド
+     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     */
     public void MakeSerectMenu() throws IOException {
         Tools tool = new Tools();
         System.out.println(tool.fileToString(new File("./sentence/menu.txt")));
 
     }
 
+
+    /**
+     * 戦闘行動を処理するメソッド
+     *
+     * @param character　Characterクラスのコンストラクタ
+     * @param enemy　Enemyクラスのコンストラクタ
+     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     */
     public void Fight(Character character, Enemy enemy) throws IOException{
 
         System.out.println(enemy.enemy_name+"をはっけん");
         System.out.println(character.character_name+"はどうしますか？");
 
-
         int character_hitpoint = character.character_physical;
         int enemy_hitpoint = enemy.enemy_physical;
-
 
         int c_result = 0;
         int e_result = 0;
@@ -33,16 +46,13 @@ public class Fight {
         while (success==false){
             MakeSerectMenu();
 
-            System.out.println("げんざいのHP:"+enemy_hitpoint);
-            System.out.println("げんざいのHP:"+character_hitpoint);
+            System.out.println(enemy.enemy_name+"のげんざいのHP:"+enemy_hitpoint);
+            System.out.println(character.character_name+"のげんざいのHP:"+character_hitpoint);
             System.out.print("こまんどをどうぞ　＞＞＞");
-
             String input_comand = in.nextLine();
 
-
             if (input_comand.equals("a")){
-
-                int[] result = attack(character,enemy,character_hitpoint,enemy_hitpoint);
+                int[] result = attack_turn(character,enemy,character_hitpoint,enemy_hitpoint);
                 c_result=result[0];
                 e_result=result[1];
 
@@ -58,9 +68,6 @@ public class Fight {
                 c_result=result[0];
                 e_result=result[1];
 
-            }else if (input_comand.equals("f")){
-                System.out.println("にげろー");
-
             }else{
                 continue;
             }
@@ -70,18 +77,23 @@ public class Fight {
 
             if (enemy_hitpoint<=0||character_hitpoint<=0){
                 success=true;
-
                 System.out.println("しゅうりょう！");
             }
-
         }
-
-
-
     }
 
 
-    public int[] attack(Character character, Enemy enemy, int character_hitpoint, int enemy_hitpoint){
+    /**
+     * キャラクタとエネミーのスピードを比べて攻撃順を変えるメソッド
+     * 死体蹴りをしないように設定
+     *
+     * @param character　Characterクラスのコンストラクタ
+     * @param enemy　Enemyクラスのコンストラクタ
+     * @param character_hitpoint　このターンのキャラクタの残りHP
+     * @param enemy_hitpoint　このターンのエネミーの残りHP
+     * @return　攻撃処理をした「キャラクタの残りHP」と「エネミーの残りHP」の配列
+     */
+    public int[] attack_turn(Character character, Enemy enemy, int character_hitpoint, int enemy_hitpoint){
 
         int c_result = 0;
         int e_result = 0;
@@ -110,9 +122,11 @@ public class Fight {
         String input_comand = in.nextLine();
 
 
-        int c_hp = 0;
-        int e_hp = 0;
+        int c_hp = character_hp;
+        int e_hp = enemy_hp;
         if (input_comand.equals("a")){
+            HpCure(character,enemy,c_hp,e_hp);
+            /*
             System.out.println("『あなた』は回復をつかった");
             c_hp=character_hp+(character_hp/2);
             System.out.println("HPが"+character_hp/2+"かいふく");
@@ -120,14 +134,18 @@ public class Fight {
             if (c_hp>character.character_physical){
                 c_hp=character.character_physical;
             }
-            int[] result = attack(character,enemy,c_hp,enemy_hp);
+            int[] result = attack_turn(character,enemy,c_hp,enemy_hp);
             c_hp=result[0];
             e_hp=result[1];
+            */
 
         }else if (input_comand.equals("s")){
-            c_hp=character_hp;
-            e_hp=enemy_hp;
 
+            int[] result = AttackUp(character,enemy,c_hp,e_hp);
+
+            c_hp=result[0];
+            e_hp=result[1];
+            /*
             System.out.println("『あなた』はついげきをつかった");
             System.out.println("このターンのみ攻撃力が1.5倍");
             in.nextLine();
@@ -136,18 +154,22 @@ public class Fight {
 
             character.character_attack=add_attack;
 
-            int[] result = attack(character,enemy,c_hp,enemy_hp);
+            int[] result = attack_turn(character,enemy,c_hp,enemy_hp);
 
             character.character_attack=return_attack;
 
             c_hp=result[0];
             e_hp=result[1];
+            */
 
 
         }else if(input_comand.equals("d")){
-            c_hp=character_hp;
-            e_hp=enemy_hp;
 
+            int[] result = DefenseUp(character,enemy,c_hp,e_hp);
+
+            c_hp=result[0];
+            e_hp=result[1];
+            /*
             System.out.println("『あなた』はかちこちをつかった");
             System.out.println("このターンのみ防御力が1.5倍");
             in.nextLine();
@@ -156,17 +178,19 @@ public class Fight {
 
             character.character_defense=add_defense;
 
-            int[] result = attack(character,enemy,c_hp,enemy_hp);
+            int[] result = attack_turn(character,enemy,c_hp,enemy_hp);
 
             character.character_defense=return_defence;
 
             c_hp=result[0];
             e_hp=result[1];
+            */
 
         }else if (input_comand.equals("f")){
-            c_hp=character_hp;
-            e_hp=enemy_hp;
 
+            int[] result = SpeedUp(character,enemy,c_hp,e_hp);
+
+            /*
             System.out.println("『あなた』はすばやくをつかった");
             System.out.println("このターンのみ速さが1.5倍");
             in.nextLine();
@@ -175,9 +199,10 @@ public class Fight {
 
             character.character_speed=add_speed;
 
-            int[] result = attack(character,enemy,c_hp,enemy_hp);
+            int[] result = attack_turn(character,enemy,c_hp,enemy_hp);
 
             character.character_speed=return_speed;
+            */
 
             c_hp=result[0];
             e_hp=result[1];
@@ -191,6 +216,74 @@ public class Fight {
 
         int[] results = {c_hp,e_hp};
         return results;
+
+    }
+
+    public int[] HpCure(Character character,Enemy enemy,int character_hp,int enemy_hp){
+        System.out.println("『あなた』は回復をつかった");
+        character_hp=character_hp+(character_hp/2);
+        System.out.println("HPが"+character_hp/2+"かいふく");
+        in.nextLine();
+        if (character_hp>character.character_physical){
+            character_hp=character.character_physical;
+        }
+        int[] result = attack_turn(character,enemy,character_hp,enemy_hp);
+
+        int[] return_result={result[0],result[1]};
+        return return_result;
+    }
+
+    public int[] AttackUp(Character character,Enemy enemy,int character_hp,int enemy_hp){
+        System.out.println("『あなた』はついげきをつかった");
+        System.out.println("このターンのみ攻撃力が1.5倍");
+        in.nextLine();
+        int return_attack = character.character_attack;
+        int add_attack = (int) (character.character_attack*(1.5));
+
+        character.character_attack=add_attack;
+
+        int[] result = attack_turn(character,enemy,character_hp,enemy_hp);
+
+        character.character_attack=return_attack;
+
+        int[] return_result={result[0],result[1]};
+        return return_result;
+    }
+
+    public int[] DefenseUp(Character character,Enemy enemy,int character_hp,int enemy_hp){
+        System.out.println("『あなた』はかちこちをつかった");
+        System.out.println("このターンのみ防御力が1.5倍");
+        in.nextLine();
+        int return_defence =character.character_defense;
+        int add_defense = (int) (character.character_defense*(1.5));
+
+        character.character_defense=add_defense;
+
+        int[] result = attack_turn(character,enemy,character_hp,enemy_hp);
+
+        character.character_defense=return_defence;
+
+        int[] return_result={result[0],result[1]};
+        return return_result;
+
+    }
+
+    public int[] SpeedUp(Character character,Enemy enemy,int character_hp,int enemy_hp){
+        System.out.println("『あなた』はすばやくをつかった");
+        System.out.println("このターンのみ速さが1.5倍");
+        in.nextLine();
+        int return_speed = character.character_speed;
+        int add_speed = (int) (character.character_speed*(1.5));
+
+        character.character_speed=add_speed;
+
+        int[] result = attack_turn(character,enemy,character_hp,enemy_hp);
+
+        character.character_speed=return_speed;
+
+        int[] return_result={result[0],result[1]};
+        return return_result;
+
 
     }
 

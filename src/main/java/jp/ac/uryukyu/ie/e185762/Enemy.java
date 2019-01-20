@@ -7,15 +7,40 @@ import java.util.Scanner;
 
 public class Enemy {
 
+    /**
+     * エネミーの名前
+     */
     String enemy_name;
+    /**
+     * エネミーの体力
+     */
     int enemy_physical;
+    /**
+     * エネミーの攻撃力
+     */
     int enemy_attack;
+    /**
+     * エネミーの防御力
+     */
     int enemy_defense;
+    /**
+     * エネミーのスピード
+     */
     int enemy_speed;
 
+    /**
+     * ユーザー入力を受け取るためのScannerのコンストラクタ
+     */
     Scanner in = new Scanner(System.in);
 
-
+    /**
+     * エネミーのステータス値が書かれたテキストファイルを読み込み、
+     * フィールド関数「enemy_name」「enemy_physical」「enemy_attack」
+     * 「enemy_defense」「enemy_speed」に当てはめるメソッド
+     *
+     * @param filename 作成したいエネミーのステータステキストの場所　例：「./sentence/enemy_list/~」
+     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     */
     public void MakeAvilityList(String filename) throws IOException {
         Tools tools = new Tools();
         String sentence = tools.fileToString(new File(filename));
@@ -48,6 +73,13 @@ public class Enemy {
         }
     }
 
+    /**
+     * どのエネミーを出現させるかをrandomを使って決めるメソッド
+     * randomで求めた数値が一定値の範囲であれば、その範囲に応じたエネミーのステータスが書かれたテキストファイルの場所を
+     * MakeAvilityListに入力する
+     *
+     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     */
     public void EnemyDicision() throws IOException {
         Random random = new Random();
         int num = random.nextInt(40);
@@ -63,6 +95,15 @@ public class Enemy {
 
     }
 
+    /**
+     * 戦闘パートでの攻撃行動を行うメソッドです
+     * 「キャラクタのHP」から「エネミーの攻撃力」＋「キャラクタの防御力」を引いた値を返します。
+     *
+     * @param character_hp　キャラクタのHP
+     * @param character_defence　キャラクタの防御力
+     * @param enemy_physical　エネミーの体力
+     * @return　「キャラクタのHP」から「エネミーの攻撃力」＋「キャラクタの防御力」を引いた値
+     */
     public int attack(int character_hp, int character_defence, int enemy_physical){
 
         int attack = this.enemy_attack-character_defence;

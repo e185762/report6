@@ -8,38 +8,60 @@ import java.util.Scanner;
 
 
 public class Adventure {
+    /**
+     * ユーザー入力を受け取るためのScannerのコンストラクタ
+     */
     Scanner in = new Scanner(System.in);
+    /**
+     * Fightクラスのコンストラクタ
+     */
     Fight fight = new Fight();
+    /**
+     * Toolsクラスのコンストラクタ
+     */
     Tools tool = new Tools();
 
 
 
-    //物語パートの文章を文章ファイルから読み込み、エンター入力に応じて出力させるメソッドです。
+    /**
+     * ストーリーパートの文章をテキストファイルから読み込み、エンター入力に応じて出力させるメソッド
+     * 選択肢にも対応
+     *
+     * @param filename 　テキストファイルの場所　例：「./sentence/story_list/1_story_list/~」
+     * @throws IOException
+     */
     public void Adventure(String filename) throws IOException {
         Tools tools = new Tools();
         String sentence = tools.fileToString(new File(filename));
-        String[] word_list = sentence.split(",",0);
+        String[] word_list = sentence.split(",", 0);
 
         int count = 0;
-        for(int num = 0; num<word_list.length; num++) {
+        for (int num = 0; num < word_list.length; num++) {
 
             if (word_list[count].contains("&")) {
                 System.out.println();
                 System.out.print("選択肢をにゅうりょくしてね　＞＞＞");
                 String input_text = in.nextLine();
                 SerectChoice(input_text, word_list[count]);
-            //}else if (word_list[count].contains("メニュー表示")){
-              //  MainMenu();
+                //}else if (word_list[count].contains("メニュー表示")){
+                //  MainMenu();
 
-            }else{
-                System.out.print(word_list[count]+"　＞＞＞");
+            } else {
+                System.out.print(word_list[count] + "　＞＞＞");
                 in.nextLine();
             }
             count++;
-            }
         }
+    }
 
 
+    /**
+     * Adventure()で選択肢を促す文章が出てきた場合に、分岐の処理をするメソッド
+     *
+     * @param imput　選んだ選択肢の文字
+     * @param choice_sentence　Adventure()から読み込んだ分岐の文章テキストの場所　例：「./sentence/story_list/1_story_list/choice_1/~」
+     * @throws IOException 入出力処理の失敗によって生成される例外クラス
+     */
     public void SerectChoice(String imput, String choice_sentence) throws IOException{
 
         String[] choice_sentences = choice_sentence.split("&", 0);
@@ -62,49 +84,41 @@ public class Adventure {
             }
         }
 
-    }
-
-    public void MainMenu() throws IOException {
-        Adventure("./sentence/mainmenu.tzt");
-        System.out.println("");
-        System.out.println("＞＞＞");
-
-        String input_order = in.nextLine();
-
-        if (input_order.equals("a")){
-
-        }else if (input_order.equals("s")){
-
-        }
-
 
     }
 
+    /**
+     * ストーリーパートと戦闘パートを繋げるメソッド
+     *
+     * @param character　Characterクラスのコンストラクタ
+     * @param enemy　Enemyクラスのコンストラクタ
+     * @param character_code　キャラクタの種類を決める文字
+     * @param story_part　「今何章目か」の数字を入力　例：１章の場合「１」　２章の場合「２」
+     * @param enemy_attack_number　この章を終わらせるために「倒すべきエネミーの数」　例：４匹の時「４」　３匹の時「３」
+     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     */
     public void StoryReader(Character character,Enemy enemy,String character_code, int story_part,int enemy_attack_number) throws IOException {
         String[] choice_comands = {"a", "s", "d"};
-        String[] character_dir = {"doll_stories","hero_stories","tank.stories"};
+        String[] character_dir = {"doll_stories","hero_stories","tank_stories"};
 
         String[] story_list = null;
         String dir_name = null;
 
         for (int num = 0; num<choice_comands.length; num++){
             if (choice_comands[num].equals(character_code)){
-                File dir = new File("./sentence/story_list/"+character_dir[num]);
+                File dir = new File("./sentence/story_list/"+character_dir[num]+"/"+story_part+"_story_list");
                 story_list= dir.list();
                 dir_name=character_dir[num];
-
             }
         }
 
-        for (int num = 1; num<story_list.length;num++){
-            Adventure("./sentence/story_list/"+dir_name+"/"+story_part+"_story_list/doll_"+String.valueOf(num)+".txt");
+        for (int num = 1; num<story_list.length+1;num++){
+            Adventure("./sentence/story_list/"+dir_name+"/"+story_part+"_story_list/"+String.valueOf(num)+".txt");
 
-
-            if (num<story_list.length-1) {
+            if (num<story_list.length) {
                 int enemy_attack = 0;
                 boolean success = false;
                 while (success == false) {
-                    System.out.println("");
                     System.out.println(tool.fileToString(new  File("./sentence/mainmenu.txt")));
                     System.out.print("＞＞＞");
 
@@ -112,7 +126,6 @@ public class Adventure {
 
                     if (input_order.equals("a")) {
                         CharacterTalk(dir_name);
-
                     } else if (input_order.equals("s")) {
                         enemy.EnemyDicision();
                         fight.Fight(character, enemy);
@@ -120,7 +133,6 @@ public class Adventure {
                         if (enemy_attack == enemy_attack_number) {
                             success = true;
                         }
-
                     } else {
                         continue;
                     }
@@ -129,13 +141,17 @@ public class Adventure {
             }else{
                 System.out.println("おわり");
             }
-
-
-
         }
 
     }
 
+    /**
+     * StoryReader()でのMainmenu画面で「おはなしする」を選択した時に
+     * ランダムで文章テキストを出力するメソッド
+     *
+     * @param dirctor_name　選択したキャラクタのディレクトリ名
+     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     */
     public void CharacterTalk(String dirctor_name) throws IOException {
         Random random = new Random();
         int num = random.nextInt(3)+1;
@@ -144,13 +160,38 @@ public class Adventure {
     }
 
 
-
+    /**
+     * タイトルを表示するメソッド
+     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     */
     public void TitlePrint() throws IOException {
         Adventure("./sentence/title.txt");
     }
 
-    public void FirstStory() throws IOException{
+    /**
+     * 導入部のストーリーを出力するメソッド
+     *
+     * @param character Characterクラスのコンストラクタ
+     * @return　キャラクタの種類を決める文字
+     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     */
+
+    public String FirstStory(Character character) throws IOException{
         Adventure("./sentence/story_list/first.txt");
+        boolean input = false;
+        String[] character_string = null;
+        System.out.print("どれにしますか？　＞＞＞");
+        while (input==false){
+            String input_text = in.nextLine();
+            character_string = character.CharacterSerect(input_text);
+
+            if (character_string[1] == ("true")){
+                input=!input;
+            }
+
+        }
+        String returns= character_string[0];
+        return returns;
     }
 
 

@@ -4,22 +4,48 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ *キャラクタのステータス作成、また戦闘パートでの攻撃行動を処理するクラスです。
+ */
+
 
 
 public class Character {
+    /**
+     * キャラクタの名前
+     */
     String character_name;
+    /**
+     * キャラクタの体力
+     */
     int character_physical;
+    /**
+     * キャラクタの攻撃力
+     */
     int character_attack;
+    /**
+     * キャラクタの防御力
+     */
     int character_defense;
+    /**
+     * キャラクタのスピード
+     */
     int character_speed;
 
+    /**
+     * ユーザー入力を受け取るためのScannerのコンストラクタ
+     */
     Scanner in = new Scanner(System.in);
 
-    //public Character(String name,int attack,int defence, int physical, int character_speed){
 
-    //}
-
-
+    /**
+     * キャラクタのステータス値が書かれたテキストファイルを読み込み、
+     * フィールド関数「character_name」「character_physical」「character_attack」
+     * 「character_defense」「character_speed」に当てはめるメソッド
+     *
+     * @param filename 作成したいキャラクタのステータステキストの場所　例：「./sentence/character_list/~」
+     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     */
     public void MakeAvilityList(String filename) throws IOException {
         Tools tools = new Tools();
         String sentence = tools.fileToString(new File(filename));
@@ -52,8 +78,16 @@ public class Character {
         }
     }
 
+    /**
+     *mainクラスで入力された「キャラクタの種類を決める文字列（「a」「s」「d」を求めている）」を読み込み、
+     * 「a」「s」「d」以外であれば再入力を促す文を生成し、「a」「s」「d」であれば
+     * 「読み込んだ文字」と、「mainクラスでのキャラクタを決めるためのwhile文を停止させる文字」の配列を返すメソッド
+     *
+     * @param input_code Scannerによって読み込まれたキャラクタの種類を決める文字列　「a」「s」「d」のいずれかが入力されることでキャラクタが決定する
+     * @return　「入力された文字」と「FirstStory()でwhile文を解除するための文字」のString配列
+     */
 
-    public String[] CharacterSerect(String input_code) throws IOException {
+    public String[] CharacterSerect(String input_code)  {
         String character_url = "./sentence/character_list/doll.txt%./sentence/character_list/hero.txt%./sentence/character_list/tank.txt\n";
         String[] split_sentence = character_url.split("%", 0);
 
@@ -92,6 +126,13 @@ public class Character {
         return returns;
     }
 
+    /**
+     * CharacterSerect()実行時に返された「キャラクタの種類を決める文字」を用いて、
+     * その文字に応じたキャラクタのステータステキストがある場所をMakeAvilityList()に入力するメソッドです
+     *
+     * @param input CharacterSerect()で返されたキャラクタの種類を決める文字　「a」「s」「d」のいずれか
+     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     */
     public void CharacterMake (String input) throws IOException {
 
         if (input.equals("a")) {
@@ -104,6 +145,15 @@ public class Character {
 
     }
 
+    /**
+     * 戦闘パートでの攻撃行動を行うメソッドです
+     * 「エネミーのHP」から「キャラクタの攻撃力」＋「エネミーの防御力」を引いた値を返します。
+     *
+     * @param enemy_hp　エネミーのHP
+     * @param enemy_defence　エネミーの防御力
+     * @param character_physical　キャラクタのHP
+     * @return　「エネミーのHP」から「キャラクタの攻撃力」＋「エネミーの防御力」を引いた値
+     */
     public int attack(int enemy_hp, int enemy_defence, int character_physical){
 
         int attack = this.character_attack-enemy_defence;

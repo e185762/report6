@@ -5,35 +5,33 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
+
 
 
 
 
 public class Tools {
 
-
-    // ファイル内容をを文字列化するメソッド。
-    // 参考http://www7a.biglobe.ne.jp/~java-master/samples/file/FileToString.html
-    public String fileToString(File file) throws IOException {
+    /**
+     * ファイル内容をを文字列化するメソッド
+     * 参考http://www7a.biglobe.ne.jp/~java-master/samples/file/FileToString.html
+     *
+     * @param file_name 文字列化したいテキストファイルの場所　例：「./sentence/~」
+     * @return　文字列化したテキストファイル
+     * @throws IOException　入出力処理の失敗によって生成される例外クラス
+     */
+    public String fileToString(File file_name) throws IOException {
         BufferedReader reader = null;
-        try {
-            // ファイル内容を文字列化するバッファドリーダを作成。
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-            // 読み込んだ文字を維持するストリングバッファを用意。
-            StringBuffer buffer = new StringBuffer();
-            // 読み込んだ一文字を保存する変数。
-            int c;
-            // ファイルから１文字ずつ読み込んでバッファに追加。
-            while ((c = reader.read()) != -1) {
-                buffer.append((char) c);
-            }
-            // バッファの内容を文字列化して返す。
-            return buffer.toString();
-        } finally {
-            // リーダを閉じる。
-            reader.close();
+
+        reader = new BufferedReader(new InputStreamReader(new FileInputStream(file_name)));
+        StringBuffer buffer = new StringBuffer();
+
+        int word;
+        while ((word = reader.read()) != -1) {
+            buffer.append((char) word);
         }
+
+        return buffer.toString();
 
     }
 
